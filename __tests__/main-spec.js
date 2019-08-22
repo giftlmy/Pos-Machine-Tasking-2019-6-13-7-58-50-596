@@ -1,4 +1,4 @@
-const  {createcodes,countProducts,fetchProduct} = require('../main');
+const  {createcodes,countProducts,fetchProduct,generateReciptItems,countTotalPriceInput,assemble} = require('../main');
 
 it ('should countProducts', () => {
     //given
@@ -17,4 +17,25 @@ it ('should fetchProduct', () => {
     //then
     expect(result.name).toBe("Coca Cola");
     expect(result.price).toBe(3);
+});
+it ('should generateReciptItems', () => {
+    //given
+    let codes=['0001', '0003', '0005', '0003'];
+    let result=generateReciptItems(codes);
+    console.log("generateReciptItems:",result);
+});
+it ('should countTotalPriceInput', () => {
+    //given
+    let codes=['0001', '0003', '0005', '0003'];
+    let result=generateReciptItems(codes);
+    let price=countTotalPriceInput(result);
+    console.log("countTotalPriceInput:",price);
+});//assemble
+it ('should assemble', () => {
+    //given
+    let codes=['0001', '0003', '0005', '0003'];
+    let ReciptItems=generateReciptItems(codes);
+    let price=countTotalPriceInput(ReciptItems);
+    let result=assemble(ReciptItems,price);
+    console.log("assemble:",result);
 });

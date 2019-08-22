@@ -12,7 +12,6 @@ function createcodes(){
         {"id": "0010", "name" : "Fanta", "price": 12}
     ];
     return codes;
-
 }
 function countProducts(codes){
     let map=new Map;
@@ -29,7 +28,6 @@ function countProducts(codes){
     })
     return result; 
 }
-
 function fetchProduct(code,db){
     for (let index = 0; index < db.length; index++) {
         if(db[index].id===code)
@@ -39,7 +37,49 @@ function fetchProduct(code,db){
 
              }
     }
+}
+function generateReciptItems(codes){
+    let countproducts=countProducts(codes);
+    let db=createcodes();
+    let result=[];
+    // for (let index = 0; index < countproducts.length; index++) {
+    //     let fetchproduct=fetchProduct(countproducts[index].key,db)
+    //     result.push({
+    //         name:fetchproduct.name,
+    //         price:fetchproduct.price,
+    //         count:countproducts[index].count
+    //     })    
+    // }
+    countproducts.forEach(function(cc){
+        let fetchproduct=fetchProduct(cc.key,db)
+            result.push({
+                name:fetchproduct.name,
+                price:fetchproduct.price,
+                count:cc.count
+            })    
+    })
+    return result;
+}
+function countTotalPriceInput(reciptItems){
+    let total=0;
+    reciptItems.forEach(function(value){
+         let price=value.count*value.price;
+         total=total+price;
+    })
+    return total;
 
 }
-
-module.exports = {createcodes,countProducts,fetchProduct};
+function assemble(reciptItems,total){
+   let str=
+   "Receipts\n"+
+   "------------------------------------------------------------\n"
+   reciptItems.forEach(function(value){
+       str = str +
+       value.name+"       "+value.price+"       "+value.count+"\n";
+   })
+   str =str+
+   "------------------------------------------------------------\n"+
+   "Price:"+total;
+   return str;
+}
+module.exports = {createcodes,countProducts,fetchProduct,generateReciptItems,countTotalPriceInput,assemble};
